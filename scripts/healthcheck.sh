@@ -21,8 +21,16 @@ echo "== Load =="
 uptime
 
 echo "== URLs =="
-# TODO: read each line of urls.txt, curl it,
-# print OK or FAIL with the HTTP code, and set STATUS=1 on failure.
-# Hint: curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$url"
+while read -r url; do
+  [[ -z "$url" ]] && continue   # skip blank lines
 
+  code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$url" || true)
+
+  if (( code >= 200 && code < 400 )); then
+    echo "OK   $code  $url"
+  else
+    echo "FAIL $code  $url"
+    STATUS=1
+  fi
+done < "$(dirname "$0")/urls.txt"
 exit "$STATUS"
