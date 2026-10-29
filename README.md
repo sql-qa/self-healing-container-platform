@@ -13,3 +13,8 @@
   - Argo CD reverts manual changes back to what's in Git
   - Rollbacks are a git revert, not manual fixes
   - Monitoring and alerts catch what auto-healing can't
+
+
+**Network drills:**
+  - I checked behind my script to make sure the URLS returned 000 and an exit code 1
+  - I scheduled a cron job that fetches the network/URLS status.
