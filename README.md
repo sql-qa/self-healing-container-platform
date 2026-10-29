@@ -8,8 +8,8 @@
 * As for the app, i will create an Python notes API with Postgres. The focus is on the infrastructure.
 
 * How it heals:
-               Kubernetes restarts crashed pods and replaces unhealthy ones (probes)
-               The autoscaler adds pods under load
-               Argo CD reverts manual changes back to what’s in Git
-               Rollbacks are a git revert, not manual fixes
-               Monitoring and alerts catch what auto-healing can’t
+  - Kubernetes restarts crashed pods and replaces unhealthy ones (probes)
+  - The autoscaler adds pods under load
+  - Argo CD reverts manual changes back to what's in Git
+  - Rollbacks are a git revert, not manual fixes
+  - Monitoring and alerts catch what auto-healing can't
