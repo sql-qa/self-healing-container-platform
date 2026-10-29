@@ -18,3 +18,7 @@
 **Network drills:**
   - I checked behind my script to make sure the URLS returned 000 and an exit code 1
   - I scheduled a cron job that fetches the network/URLS status
+
+**Phase 1 complete.**
+
+
