@@ -41,3 +41,23 @@
 **Phase 2 complete**
 
 **Phase 3 started**
+
+* In phase 3, i implemented a check.
+
+* Run a test with pytest to see if it matches dock file
+
+* Build an image with commit ID and scans for CVE's also pushes on main only
+
+* Running the tests you'll see /health returns 200 and /ready returns 503 (only because of the drill, when docker stops the db)
+
+**Branch protection for main**
+
+* All changes must now go through a pull requst
+
+* If the checks aren't passed? It can't be merged
+
+** Drill**
+
+* Opened a pr just for a failing test it failed so it skipped build and stopped the merge
+
+* Repaired the branch the reran a succesful test then link to PR
