@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements-dev.txt
+      - run: ruff check app tests
+      - run: pytest -v
+      - run: shellcheck scripts/healthcheck.sh
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Build image
+        run: docker build -t notes-api:${{ github.sha }} .
+
+      - name: Scan image with Trivy
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+            aquasec/trivy:latest image --exit-code 1 --severity CRITICAL --ignore-unfixed \
+            notes-api:${{ github.sha }}
+
+      - name: Log in to GitHub Container Registry
+        if: github.ref == 'refs/heads/main'
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push image
+        if: github.ref == 'refs/heads/main'
+        run: |
+          IMAGE=ghcr.io/${{ github.repository_owner }}/notes-api
+          SHORT_SHA=$(echo ${{ github.sha }} | cut -c1-7)
+          docker tag notes-api:${{ github.sha }} $IMAGE:$SHORT_SHA
+          docker tag notes-api:${{ github.sha }} $IMAGE:latest
+          docker push $IMAGE:$SHORT_SHA
+          docker push $IMAGE:latest
