@@ -25,4 +25,16 @@
 
 * Phase 2 is where i containerize the app
 
+* I chose to run fastapi and postgres with docker compose
+
+**Run:**
+  - cp .env.example to .env, don't forget to change the password
+  - use docker compose up -d
+  - call it using curl localhost:your_port/health, /ready and also /notes
+
+* It's built to be ran by non root users and also comes with a healthcheck
+
+* /health is to know the app is functioning
+
+* /ready is connection to the db or it'll return a 503 error
 
