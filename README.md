@@ -38,3 +38,6 @@
 
 * /ready is connection to the db or it'll return a 503 error
 
+**Phase 2 complete**
+
+**Phase 3 started**
